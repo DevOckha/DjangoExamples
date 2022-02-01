@@ -49,13 +49,13 @@ class Item(models.Model):
     
 
     def get_absolute_url(self):
-        return reverse('core:produc', kwargs={'slug', self.slug})
+        return reverse('core:produc', kwargs={'slug', self.slug}) # ürünün detaylarını görmek için kesinleşmiş ve ileride ürün üzerinde yapılacak değişiklikler için kolaylık sağlayan bir fonksiyon.
     
     def get_add_to_cart(self):
-        return reverse('core:add-to-card', kwargs={'slug':self.slug})
+        return reverse('core:add-to-card', kwargs={'slug':self.slug}) # ürünü sepete eklemek için tanımlanmış fonksiyon
 
     def get_remove_form_cart_url(self):
-        return reverse('core:remove-from-cart', kwargs={'slug', self.slug})
+        return reverse('core:remove-from-cart', kwargs={'slug', self.slug}) # ürünü sepetten silmek için tanımlanmış fonksiyon
 
 
 
@@ -68,13 +68,13 @@ class OrderItem(models.Model):
     def __str__(self):
         return f' {self.quantity} of {self.item.title} '
     
-    def get_total_item_price(self):
+    def get_total_item_price(self): # sepetteki toplam ürün fiyatını hesaplayan fonksiyon
         return self.quantity * self.item.price
 
-    def get_total_discount_item_price(self):
+    def get_total_discount_item_price(self): # indirimli ürünlerin toplam fiyatını hesaplayan fonksiyon
         return self.quantity * self.item.discount_price
     
-    def get_amount_saved(self):
+    def get_amount_saved(self): # ödenecek fiyatı hesaplayan fonksiyon 
         return self.get_total_item_price() - self.get_total_discount_item_price()
     
 
@@ -93,7 +93,7 @@ class Order(models.Model):
     ordered = models.BooleanField(default=False)
     shipping_address = models.ForeignKey('Address', related_name='shipping_address', on_delete=models.SET_NULL, blank=True, null=True)
     billing_address = models.ForeignKey('Address', related_name='billing_address', on_delete=models.SET_NULL, blank=True, null=True)
-    paymen = models.ForeignKey('Payment', on_delete=models.SET_NULL, blank=True, null=True)
+    payment = models.ForeignKey('Payment', on_delete=models.SET_NULL, blank=True, null=True)
     coupon = models.ForeignKey('Coupon', on_delete=models.SET_NULL, blank=True, null=True)
     being_delivered = models.BooleanField(default=False)
     received = models.BooleanField(default=False)
